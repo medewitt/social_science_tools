@@ -1,0 +1,86 @@
+---
+title: "sj_tools_demo"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Strenge Jacke Tool kit
+
+```{r}
+library(sjPlot)
+```
+
+```{r}
+x <- factor(sample(1:2, 200, replace = T, prob = c(0.6, 0.4)), labels = c("female", "male"))
+plot(x)
+```
+
+```{r}
+library(sjPlot)
+sjp.frq(x)
+```
+
+```{r}
+library(sjmisc)
+data(efc)
+str(efc$e42dep)
+```
+
+##Manually attach labels
+
+```{r}
+# load libraries
+library(sjPlot)
+library(sjmisc)
+# init default theme for plots
+sjp.setTheme(geom.label.size = 2.5, axis.title.size = .9, axis.textsize = .9)
+# create dummy variable
+dummy <- sample(1:4, 200, replace = TRUE)
+# show frequency table, w/o value labels
+sjp.frq(dummy)
+```
+
+```{r}
+library(sjmisc)
+# manually attach value and variable labels
+dummy <- set_labels(dummy, c("very low", "low", "mid", "hi"))
+dummy <- set_label(dummy, "This is a dummy")
+# check structure of dummy
+str(dummy)
+```
+
+```{r}
+sjp.frq(dummy, title = NULL)
+```
+
+
+```{r}
+# load sample data set. this data frame has value and variable
+# label attributes that can be accessed with "get_labels"
+# and "get_label"
+data(efc)
+# Function call when label attributes are attached
+sjp.xtab(efc$e42dep, efc$e16sex)
+# Equivalent function call when label attributes are not attached, 
+# if axis labels should be printed
+sjp.xtab(efc$e42dep, 
+         efc$e16sex, 
+         axisLabels.x = c("independent", 
+                          "slightly dependent", 
+                          "moderately dependent", 
+                          "severely dependent"), 
+         legendLabels = c("male", "female"))
+```
+
+```{r}
+sjp.xtab(efc$e42dep, efc$e16sex, 
+         axis.labels = c("independent", "slightly dependent", 
+                          "moderately dependent",  "severely dependent"), 
+         axis.titles = "how dependent is the elder? - subjective perception of carer",
+         legend.labels = c("male", "female"),
+         legend.title = "elder's gender")
+```
+
